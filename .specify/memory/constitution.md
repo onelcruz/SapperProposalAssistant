@@ -1,50 +1,112 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+Sync Impact Report
+- Version change: template -> 1.0.0
+- Modified principles:
+  - Template Principle 1 -> I. Code Quality Is Mandatory
+  - Template Principle 2 -> II. Tests Prove Behavior
+  - Template Principle 3 -> III. User Experience Must Stay Consistent
+  - Template Principle 4 -> IV. Performance Is a Product Requirement
+  - Template Principle 5 -> V. Maintainable Python Over Cleverness
+- Added sections:
+  - Engineering Standards
+  - Delivery Workflow & Quality Gates
+- Removed sections:
+  - None
+- Follow-up TODOs:
+  - None
+-->
+
+# SapperProposalAssistant Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Code Quality Is Mandatory
+All production changes MUST be small, readable, typed where practical, and reviewed for
+clarity, correctness, and security. Functions and modules MUST have a single clear purpose,
+duplicate logic MUST be reduced, and public behavior MUST be explicit rather than implied.
+Quick fixes that increase ambiguity, hidden coupling, or silent failure modes are not
+acceptable.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+Rationale: proposal generation is trust-sensitive, so maintainers must be able to understand
+and verify how inputs become outputs.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### II. Tests Prove Behavior
+Every change that affects behavior MUST include or update automated tests at the appropriate
+level. Unit tests MUST cover decision logic and edge cases, integration tests MUST cover
+component boundaries, and regression tests MUST be added for defects that previously escaped.
+Code may not be merged when required tests are missing or failing.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+Rationale: assistant workflows depend on prompt assembly, validation, and output formatting that
+can regress silently without executable checks.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### III. User Experience Must Stay Consistent
+User-facing behavior MUST be predictable across commands, prompts, validations, and generated
+proposal content. Terminology, formatting, error messages, and recovery guidance MUST follow
+the same patterns across the product, and new features MUST not introduce conflicting workflows
+or surprising defaults. Changes that affect output structure MUST preserve backwards-compatible
+expectations unless the change is explicitly approved.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+Rationale: proposal assistants succeed when users can trust the interaction model and the shape
+of generated results.
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+### IV. Performance Is a Product Requirement
+Features MUST preserve responsive local interactions and efficient proposal generation under
+normal workloads. Expensive operations MUST be measured, bounded, or deferred; repeated work
+MUST be cached or eliminated when practical; and large-input paths MUST be evaluated for
+latency and memory impact before release. Performance regressions that degrade the core user
+flow are release blockers.
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+Rationale: assistants lose usefulness quickly when generation, validation, or feedback loops
+feel slow or unpredictable.
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+### V. Maintainable Python Over Cleverness
+Python code MUST prioritize readability, explicitness, and maintainability over novelty.
+Implementations MUST follow current Python best practices: use descriptive names, type hints,
+standard-library features before custom abstractions, structured data models, explicit error
+handling, and dependency scopes that remain easy to upgrade. Hidden side effects, overly dynamic
+metaprogramming, and tightly coupled modules SHOULD be avoided unless a clear, documented need
+exists.
+
+Rationale: this repository is a proposal assistant, so its long-term value depends on Python
+code that future contributors can safely extend and debug.
+
+## Engineering Standards
+
+- Python code MUST target a single clear execution path per responsibility and keep I/O,
+  business rules, and presentation concerns separated.
+- Public modules, service boundaries, and data contracts MUST use type hints and stable schemas.
+- Configuration MUST be explicit, environment-driven where appropriate, and validated early.
+- Logging and errors MUST provide actionable debugging context without leaking secrets or user
+  content unnecessarily.
+- Dependencies MUST be justified, actively maintained, and introduced only when simpler standard
+  approaches are insufficient.
+
+## Delivery Workflow & Quality Gates
+
+- Work MUST begin with clear acceptance criteria for proposal behavior, validation rules, and
+  user-visible output changes.
+- Pull requests MUST document affected behaviors, test coverage, and any performance or UX trade
+  offs.
+- Reviewers MUST check compliance with all constitution principles, with special attention to
+  Python readability, test completeness, and UX consistency.
+- Merges require all relevant automated checks to pass and any known regressions to be resolved
+  or explicitly waived by maintainers.
+- Release-impacting changes to proposal formats, prompts, or generated artifacts MUST include a
+  migration or compatibility note when user expectations could change.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+This constitution overrides conflicting local habits and serves as the default standard for
+planning, implementation, review, and release decisions in this repository.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+- Amendments MUST be proposed in writing, reviewed by maintainers, and merged with an explanation
+  of the rationale, affected principles, and any required transition steps.
+- Constitution versioning MUST follow semantic versioning:
+  - MAJOR for incompatible governance or principle changes.
+  - MINOR for new principles, sections, or materially stronger guidance.
+  - PATCH for clarifications, wording improvements, and non-semantic refinements.
+- Every pull request review MUST include an explicit constitution compliance check.
+- When a change conflicts with this constitution, the constitution MUST be amended first or the
+  change MUST be rejected.
+
+**Version**: 1.0.0 | **Ratified**: 2026-08-10 | **Last Amended**: 2026-08-10
