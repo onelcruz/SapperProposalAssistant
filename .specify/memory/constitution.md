@@ -85,8 +85,8 @@ code that future contributors can safely extend and debug.
 
 - Work MUST begin with clear acceptance criteria for proposal behavior, validation rules, and
   user-visible output changes.
-- Pull requests MUST document affected behaviors, test coverage, and any performance or UX trade
-  offs.
+- Pull requests MUST document affected behaviors, test coverage, and any performance or UX
+  trade-offs.
 - Reviewers MUST check compliance with all constitution principles, with special attention to
   Python readability, test completeness, and UX consistency.
 - Merges require all relevant automated checks to pass and any known regressions to be resolved
