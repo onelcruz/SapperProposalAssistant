@@ -23,12 +23,12 @@ description: "Task list for Build Initial Project — GovCon Proposal Assistant"
 
 **Purpose**: Initialize the Next.js + TypeScript project with all required dependencies and tooling.
 
-- [ ] T001 Initialize Next.js project with TypeScript in repository root (`npx create-next-app@latest . --typescript --tailwind --app --src-dir`)
-- [ ] T002 Install core dependencies: `openai`, `@prisma/client`, `prisma`, `pdf-parse`, `mammoth`, `docx`, `@pinecone-database/pinecone` (`npm install`)
-- [ ] T003 [P] Install dev dependencies: `eslint`, `prettier`, `@types/pdf-parse`, `@types/node` (`npm install -D`)
-- [ ] T004 [P] Configure ESLint and Prettier in `.eslintrc.json` and `.prettierrc`
-- [ ] T005 [P] Create `.env.example` listing all required environment variables: `DATABASE_URL`, `OPENAI_API_KEY`, `PINECONE_API_KEY`, `PINECONE_ENVIRONMENT`, `CLERK_SECRET_KEY`, `CLERK_PUBLISHABLE_KEY`, `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`
-- [ ] T006 Create `src/` directory structure: `app/`, `components/`, `lib/`, `api/` (Next.js App Router layout)
+- [x] T001 Initialize Next.js project with TypeScript in repository root (`npx create-next-app@latest . --typescript --tailwind --app --src-dir`)
+- [x] T002 Install core dependencies: `openai`, `@prisma/client`, `prisma`, `pdf-parse`, `mammoth`, `docx`, `@pinecone-database/pinecone` (`npm install`)
+- [x] T003 [P] Install dev dependencies: `eslint`, `prettier`, `@types/pdf-parse`, `@types/node` (`npm install -D`)
+- [x] T004 [P] Configure ESLint and Prettier in `.eslintrc.json` and `.prettierrc`
+- [x] T005 [P] Create `.env.example` listing all required environment variables: `DATABASE_URL`, `OPENAI_API_KEY`, `PINECONE_API_KEY`, `PINECONE_ENVIRONMENT`, `CLERK_SECRET_KEY`, `CLERK_PUBLISHABLE_KEY`, `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`
+- [x] T006 Create `src/` directory structure: `app/`, `components/`, `lib/`, `api/` (Next.js App Router layout)
 
 ---
 
@@ -38,16 +38,16 @@ description: "Task list for Build Initial Project — GovCon Proposal Assistant"
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete.
 
-- [ ] T007 Initialize Prisma and configure `DATABASE_URL` in `prisma/schema.prisma`; define all models: `Company`, `Document`, `DocumentChunk`, `Solicitation`, `ProposalSection`, `Draft`, `Export`
-- [ ] T008 Write and run initial Prisma migration (`npx prisma migrate dev --name init`); commit `prisma/migrations/`
-- [ ] T009 [P] Set up Clerk authentication: install `@clerk/nextjs`, wrap app in `<ClerkProvider>` in `src/app/layout.tsx`, protect all API routes via middleware in `src/middleware.ts`
-- [ ] T010 [P] Implement company-workspace resolver in `src/lib/workspace.ts` — resolves `companyId` from the authenticated Clerk `orgId` on every request
-- [ ] T011 [P] Create Pinecone client singleton in `src/lib/pinecone.ts` — initialized with `PINECONE_API_KEY` and `PINECONE_ENVIRONMENT`
-- [ ] T012 [P] Create OpenAI client singleton in `src/lib/openai.ts` — initialized with `OPENAI_API_KEY`
-- [ ] T013 [P] Create Prisma client singleton in `src/lib/prisma.ts`
-- [ ] T014 Implement shared error-handling utility in `src/lib/errors.ts` — standard API error shape `{ error: string, code: string }`
-- [ ] T015 [P] Build basic app shell: sidebar nav, workspace context header in `src/app/layout.tsx` and `src/components/layout/Sidebar.tsx`
-- [ ] T016 [P] Create shared file-upload UI component in `src/components/ui/FileUpload.tsx` — handles drag-and-drop, shows progress, surfaces errors
+- [x] T007 Initialize Prisma and configure `DATABASE_URL` in `prisma/schema.prisma`; define all models: `Company`, `Document`, `DocumentChunk`, `Solicitation`, `ProposalSection`, `Draft`, `Export`
+- [x] T008 Write and run initial Prisma migration (`npx prisma migrate dev --name init`); commit `prisma/migrations/`
+- [x] T009 [P] Set up Clerk authentication: install `@clerk/nextjs`, wrap app in `<ClerkProvider>` in `src/app/layout.tsx`, protect all API routes via middleware in `src/middleware.ts`
+- [x] T010 [P] Implement company-workspace resolver in `src/lib/workspace.ts` — resolves `companyId` from the authenticated Clerk `orgId` on every request
+- [x] T011 [P] Create Pinecone client singleton in `src/lib/pinecone.ts` — initialized with `PINECONE_API_KEY` and `PINECONE_ENVIRONMENT`
+- [x] T012 [P] Create OpenAI client singleton in `src/lib/openai.ts` — initialized with `OPENAI_API_KEY`
+- [x] T013 [P] Create Prisma client singleton in `src/lib/prisma.ts`
+- [x] T014 Implement shared error-handling utility in `src/lib/errors.ts` — standard API error shape `{ error: string, code: string }`
+- [x] T015 [P] Build basic app shell: sidebar nav, workspace context header in `src/app/layout.tsx` and `src/components/layout/Sidebar.tsx`
+- [x] T016 [P] Create shared file-upload UI component in `src/components/ui/FileUpload.tsx` — handles drag-and-drop, shows progress, surfaces errors
 
 **Checkpoint**: Foundation ready — user story implementation can now begin.
 
@@ -61,19 +61,19 @@ description: "Task list for Build Initial Project — GovCon Proposal Assistant"
 
 ### Implementation for User Story 1
 
-- [ ] T017 [P] [US1] Create `Document` data-access layer in `src/lib/db/documents.ts` — CRUD helpers wrapping Prisma `Document` model
-- [ ] T018 [P] [US1] Implement SHA-256 hash utility in `src/lib/hash.ts` using Node.js `crypto`; used for duplicate detection
-- [ ] T019 [P] [US1] Implement PDF text extractor in `src/lib/parsers/pdf.ts` using `pdf-parse`; throw `ScannedPdfError` when extracted text length < 100 chars for multi-page documents
-- [ ] T020 [P] [US1] Implement DOCX text extractor in `src/lib/parsers/docx.ts` using `mammoth`
-- [ ] T021 [US1] Implement text chunker in `src/lib/chunker.ts` — splits extracted text into overlapping chunks (512 tokens, 50-token overlap) suitable for embedding
-- [ ] T022 [US1] Implement embedding service in `src/lib/embeddings.ts` — calls `openai.embeddings.create` with `text-embedding-ada-002`; returns `{ chunk, embedding }[]`
-- [ ] T023 [US1] Implement Pinecone upsert helper in `src/lib/vectorstore.ts` — upserts vectors under namespace `company:{companyId}`; includes `documentId` and `chunkIndex` metadata
-- [ ] T024 [US1] Create document indexing orchestrator in `src/lib/indexing.ts` — orchestrates: hash check → parse → chunk → embed → upsert → persist `Document` + `DocumentChunk` records; updates `Document.status` (`processing` → `indexed` or `failed`)
-- [ ] T025 [US1] Implement upload API route in `src/app/api/documents/route.ts` (`POST /api/documents`): validate file type (PDF/DOCX only → 415 if unsupported), stream to buffer, call indexing orchestrator, return `{ documentId, status }`
-- [ ] T026 [US1] Implement documents list API route in `src/app/api/documents/route.ts` (`GET /api/documents`): return all documents for the authenticated company workspace
-- [ ] T027 [US1] Build Knowledge Base upload page in `src/app/dashboard/knowledge-base/page.tsx` — uses `FileUpload` component, calls `POST /api/documents`, shows per-file status (processing / indexed / error with message)
-- [ ] T028 [US1] Build documents list component in `src/components/knowledge-base/DocumentList.tsx` — lists uploaded documents with name, status, and upload date; fetches from `GET /api/documents`
-- [ ] T029 [US1] Add cross-company isolation guard to all document API handlers in `src/app/api/documents/route.ts` — assert `document.companyId === resolvedCompanyId` before returning any data
+- [x] T017 [P] [US1] Create `Document` data-access layer in `src/lib/db/documents.ts` — CRUD helpers wrapping Prisma `Document` model
+- [x] T018 [P] [US1] Implement SHA-256 hash utility in `src/lib/hash.ts` using Node.js `crypto`; used for duplicate detection
+- [x] T019 [P] [US1] Implement PDF text extractor in `src/lib/parsers/pdf.ts` using `pdf-parse`; throw `ScannedPdfError` when extracted text length < 100 chars for multi-page documents
+- [x] T020 [P] [US1] Implement DOCX text extractor in `src/lib/parsers/docx.ts` using `mammoth`
+- [x] T021 [US1] Implement text chunker in `src/lib/chunker.ts` — splits extracted text into overlapping chunks (512 tokens, 50-token overlap) suitable for embedding
+- [x] T022 [US1] Implement embedding service in `src/lib/embeddings.ts` — calls `openai.embeddings.create` with `text-embedding-ada-002`; returns `{ chunk, embedding }[]`
+- [x] T023 [US1] Implement Pinecone upsert helper in `src/lib/vectorstore.ts` — upserts vectors under namespace `company:{companyId}`; includes `documentId` and `chunkIndex` metadata
+- [x] T024 [US1] Create document indexing orchestrator in `src/lib/indexing.ts` — orchestrates: hash check → parse → chunk → embed → upsert → persist `Document` + `DocumentChunk` records; updates `Document.status` (`processing` → `indexed` or `failed`)
+- [x] T025 [US1] Implement upload API route in `src/app/api/documents/route.ts` (`POST /api/documents`): validate file type (PDF/DOCX only → 415 if unsupported), stream to buffer, call indexing orchestrator, return `{ documentId, status }`
+- [x] T026 [US1] Implement documents list API route in `src/app/api/documents/route.ts` (`GET /api/documents`): return all documents for the authenticated company workspace
+- [x] T027 [US1] Build Knowledge Base upload page in `src/app/dashboard/knowledge-base/page.tsx` — uses `FileUpload` component, calls `POST /api/documents`, shows per-file status (processing / indexed / error with message)
+- [x] T028 [US1] Build documents list component in `src/components/knowledge-base/DocumentList.tsx` — lists uploaded documents with name, status, and upload date; fetches from `GET /api/documents`
+- [x] T029 [US1] Add cross-company isolation guard to all document API handlers in `src/app/api/documents/route.ts` — assert `document.companyId === resolvedCompanyId` before returning any data
 
 **Checkpoint**: User Story 1 is fully functional — document upload, dedup, scanned-PDF rejection, indexing, and isolation all work independently.
 
