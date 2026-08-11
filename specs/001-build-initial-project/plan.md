@@ -79,6 +79,13 @@ Build a private AI workspace for small GovCon firms that ingests their own capab
 - Cross-company isolation audit (no data leakage between namespaces)
 - Duplicate document detection (M2 already handles; add regression tests)
 
+### M7 — Acceptance Validation & Readiness
+- Execute independent-test validation for US1–US4 and document pass/fail evidence
+- Run SLA timing validation for SC-001, SC-002, SC-003, and SC-006 with repeatable measurement protocol
+- Verify citation coverage for SC-004 across generated draft samples
+- Execute explicit cross-company isolation negative tests (API, retrieval, and export paths) for SC-005
+- Produce final acceptance checklist tied to FR-001 through FR-013 and SC-001 through SC-007
+
 ---
 
 ## Data Model (Prisma sketch)
