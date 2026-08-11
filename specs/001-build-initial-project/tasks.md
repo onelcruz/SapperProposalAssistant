@@ -146,9 +146,21 @@ description: "Task list for Build Initial Project — GovCon Proposal Assistant"
 - [ ] T051 [P] Add large-document guard in `src/lib/parsers/pdf.ts` and `src/lib/indexing.ts` — stream processing for files > 10 MB; surface progress via Server-Sent Events on `GET /api/documents/:id/status`
 - [ ] T052 [P] Add corrupted/password-protected PDF detection in `src/lib/parsers/solicitation.ts` — catch `pdf-parse` exceptions, return `CorruptedFileError` with user-friendly message
 - [ ] T053 [P] Add rate-limit and timeout wrappers in `src/lib/openai.ts` — retry with exponential backoff (max 3 attempts) for transient OpenAI errors
-- [ ] T054 Cross-company isolation audit in `src/app/api/` — review all routes to confirm `companyId` guard is applied before any Prisma query or Pinecone lookup; add integration assertions
+- [ ] T054 Cross-company isolation audit in `src/app/api/`, `src/lib/retrieval.ts`, and `src/app/api/exports/route.ts` — confirm `companyId` guard is enforced before Prisma, Pinecone, draft retrieval, and export operations; add integration assertions for cross-company denial paths
 - [ ] T055 [P] Add loading skeletons and error boundary components in `src/components/ui/Skeleton.tsx` and `src/components/ui/ErrorBoundary.tsx`
 - [ ] T056 [P] Update `README.md` with local dev setup, environment variable guide, and architecture overview
+
+---
+
+## Phase 8: Validation & Acceptance
+
+**Purpose**: Explicitly validate user-story independent tests, functional requirements, and measurable success criteria before release readiness.
+
+- [ ] T057 Create acceptance matrix in `specs/001-build-initial-project/acceptance-matrix.md` mapping US1–US4 independent tests to FR-001 through FR-013 with pass/fail evidence fields
+- [ ] T058 Define and execute SLA timing validation protocol in `specs/001-build-initial-project/validation/sla-results.md` for SC-001, SC-002, SC-003, and SC-006 (minimum 3 runs each with measured durations)
+- [ ] T059 Define and execute citation-coverage validation in `specs/001-build-initial-project/validation/citation-coverage.md` to confirm SC-004 across representative generated drafts
+- [ ] T060 Define and execute cross-company isolation validation in `specs/001-build-initial-project/validation/isolation-results.md` with explicit negative tests for API access, retrieval, and exports to verify SC-005
+- [ ] T061 Define and execute final readiness checklist in `specs/001-build-initial-project/validation/final-readiness.md` covering SC-007 evidence, unresolved risks, and go/no-go decision
 
 ---
 
@@ -163,6 +175,7 @@ description: "Task list for Build Initial Project — GovCon Proposal Assistant"
 - **US3 (Phase 5)**: Depends on US1 AND US2 (requires knowledge base + solicitation)
 - **US4 (Phase 6)**: Depends on US3 (requires at least one draft)
 - **Polish (Phase 7)**: Depends on all user stories
+- **Validation (Phase 8)**: Depends on US1–US4 and Phase 7 stabilization tasks
 
 ### Parallel Opportunities Per Story
 
@@ -229,4 +242,3 @@ With two developers after Phase 2:
 - Each user story is independently completable and testable
 - Commit after each task or logical group
 - Validate each story checkpoint before moving to the next priority
-- No test tasks generated (not requested in spec)

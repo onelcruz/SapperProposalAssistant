@@ -4,7 +4,7 @@
 
 **Created**: 2026-08-10
 
-**Status**: Draft
+**Status**: Approved
 
 **Input**: User description: "Build the initial SapperProposalAssistant project — a private AI workspace that reads a small GovCon firm's own capability statements and past performance, then drafts proposal sections against a new solicitation."
 
@@ -87,7 +87,7 @@ After reviewing and editing proposal sections, the user exports the complete dra
 - What happens when a user uploads a scanned PDF (image-only, no selectable text)? The system must detect this and inform the user that text extraction was not possible, rather than silently indexing an empty document.
 - What happens if the solicitation PDF is corrupted or password-protected? The system must surface a clear error rather than processing partial content.
 - How does the system handle a knowledge base with very few documents (e.g., one short capability statement)? It must produce the best possible draft from available material and explicitly note the limited source coverage.
-- What happens if a user uploads the same document twice? The system should detect the duplicate and either skip re-indexing or replace the prior version, not create conflicting duplicate entries.
+- What happens if a user uploads the same document twice? The system must detect the duplicate, skip re-indexing, and return a clear message that the existing indexed document is being reused.
 - How does the system handle extremely large documents (e.g., a 200-page solicitation)? Processing time must remain bounded and the user must receive feedback indicating progress.
 
 ---
@@ -108,7 +108,7 @@ After reviewing and editing proposal sections, the user exports the complete dra
 - **FR-010**: The user MUST be able to edit any generated draft section and have their edits preserved as the working version.
 - **FR-011**: The system MUST export drafted and edited proposal sections to a .docx Word document.
 - **FR-012**: The system MUST detect and reject scanned (image-only) PDFs during upload, notifying the user that text extraction was not possible.
-- **FR-013**: The system MUST handle duplicate document uploads without creating conflicting index entries.
+- **FR-013**: The system MUST handle duplicate document uploads by skipping re-indexing and returning the existing indexed document reference without creating conflicting index entries.
 
 ### Key Entities
 
