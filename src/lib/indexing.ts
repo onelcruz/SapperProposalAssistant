@@ -6,14 +6,18 @@ import {
 } from "@/lib/db/documents";
 import { chunkText } from "@/lib/chunker";
 import { embedChunks } from "@/lib/embeddings";
-import { DuplicateDocumentError } from "@/lib/errors";
+import { DuplicateDocumentError, PayloadTooLargeError } from "@/lib/errors";
 import { sha256FromBuffer } from "@/lib/hash";
 import { parseDocx } from "@/lib/parsers/docx";
-import { parsePdf } from "@/lib/parsers/pdf";
+import { MAX_PDF_SIZE_BYTES, parsePdf } from "@/lib/parsers/pdf";
 import { upsertDocumentVectors } from "@/lib/vectorstore";
 
 const PDF_MIME_TYPE = "application/pdf";
 const DOCX_MIME_TYPE = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+
+// Applies to all supported file types so DOCX uploads are bounded the same
+// way as the PDF-specific guard in src/lib/parsers/pdf.ts.
+export const MAX_DOCUMENT_SIZE_BYTES = MAX_PDF_SIZE_BYTES;
 
 export async function indexDocument({
   companyId,
@@ -26,6 +30,12 @@ export async function indexDocument({
   fileType: string;
   buffer: Buffer;
 }) {
+  if (buffer.byteLength > MAX_DOCUMENT_SIZE_BYTES) {
+    throw new PayloadTooLargeError(
+      "This file exceeds the 25 MB processing limit. Split it into smaller files and re-upload.",
+    );
+  }
+
   const sha256Hash = sha256FromBuffer(buffer);
   const existingDocument = await findDocumentByCompanyAndHash(companyId, sha256Hash);
 

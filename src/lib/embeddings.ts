@@ -1,4 +1,4 @@
-import { getOpenAIClient } from "@/lib/openai";
+import { getOpenAIClient, withOpenAIRetry } from "@/lib/openai";
 import type { TextChunk } from "@/lib/chunker";
 
 export type EmbeddedChunk = {
@@ -12,10 +12,12 @@ export async function embedChunks(chunks: TextChunk[]): Promise<EmbeddedChunk[]>
   }
 
   const openai = getOpenAIClient();
-  const response = await openai.embeddings.create({
-    model: "text-embedding-ada-002",
-    input: chunks.map((chunk) => chunk.text),
-  });
+  const response = await withOpenAIRetry(() =>
+    openai.embeddings.create({
+      model: "text-embedding-ada-002",
+      input: chunks.map((chunk) => chunk.text),
+    }),
+  );
 
   return chunks.map((chunk, index) => ({
     chunk,
