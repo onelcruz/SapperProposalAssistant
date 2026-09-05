@@ -7,6 +7,8 @@ const navigationItems = [
   { href: "/", label: "Overview" },
   { href: "/dashboard", label: "Dashboard" },
   { href: "/dashboard/knowledge-base", label: "Knowledge Base" },
+  { href: "/dashboard/solicitations/new", label: "Solicitations" },
+  { href: "/dashboard/proposals/new", label: "Proposal Drafts" },
 ];
 
 export function Sidebar() {
@@ -46,8 +48,8 @@ export function Sidebar() {
       <div className="mt-auto rounded-2xl border border-slate-800 bg-slate-900/60 p-4 text-sm text-slate-300">
         <p className="font-semibold text-white">Current phase</p>
         <p className="mt-2 leading-6 text-slate-400">
-          Setup, foundational services, and knowledge-base uploads are ready for implementation and
-          validation.
+          Knowledge base ingestion, solicitation parsing, cited proposal drafting, and Word export
+          are all implemented end-to-end.
         </p>
       </div>
     </aside>

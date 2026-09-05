@@ -16,7 +16,7 @@ type FileUploadProps = {
   accept?: string;
   endpoint: string;
   multiple?: boolean;
-  onComplete?: () => void;
+  onComplete?: (response: unknown, file: File) => void;
 };
 
 type ApiError = {
@@ -63,9 +63,15 @@ export function FileUpload({ accept, endpoint, multiple = true, onComplete }: Fi
           return;
         }
 
+        const progress = Math.round((event.loaded / event.total) * 100);
+
         updateEntry(id, {
           status: "uploading",
-          progress: Math.round((event.loaded / event.total) * 100),
+          progress,
+          // Once the upload itself finishes, the server may still be parsing
+          // and indexing/extracting for a while — surface that as "Processing…"
+          // rather than leaving the UI looking stuck at 100%.
+          message: progress >= 100 ? "Processing…" : undefined,
         });
       });
 
@@ -78,7 +84,7 @@ export function FileUpload({ accept, endpoint, multiple = true, onComplete }: Fi
             status: "indexed",
             message: "Indexed",
           });
-          onComplete?.();
+          onComplete?.(request.response, file);
         } else {
           updateEntry(id, {
             status: "error",
