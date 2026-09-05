@@ -52,6 +52,24 @@ export class ForbiddenError extends ApiRouteError {
   }
 }
 
+export class PayloadTooLargeError extends ApiRouteError {
+  constructor(message = "This file is too large to process. Please upload a smaller file.") {
+    super(message, "PAYLOAD_TOO_LARGE", 413);
+  }
+}
+
+export class ExtractionTimeoutError extends ApiRouteError {
+  constructor(message = "Processing timed out. Please try again or use a smaller document.") {
+    super(message, "EXTRACTION_TIMEOUT", 504);
+  }
+}
+
+export class NotFoundResourceError extends ApiRouteError {
+  constructor(message = "The requested resource could not be found.") {
+    super(message, "NOT_FOUND", 404);
+  }
+}
+
 export function toApiError(error: unknown): { status: number; body: ApiError } {
   if (error instanceof ApiRouteError) {
     return {

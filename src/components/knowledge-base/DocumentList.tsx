@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { SkeletonList } from "@/components/ui/Skeleton";
 
 type DocumentListProps = {
   reloadKey?: number;
@@ -81,7 +82,7 @@ export function DocumentList({ reloadKey = 0 }: DocumentListProps) {
         </div>
       </div>
 
-      {isLoading ? <p className="mt-6 text-sm text-slate-400">Loading documents…</p> : null}
+      {isLoading ? <div className="mt-6"><SkeletonList rows={3} /></div> : null}
       {error ? <p className="mt-6 text-sm text-rose-300">{error}</p> : null}
       {!isLoading && !error && documents.length === 0 ? (
         <p className="mt-6 text-sm text-slate-400">No documents uploaded for this workspace yet.</p>

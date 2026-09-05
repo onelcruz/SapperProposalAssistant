@@ -78,3 +78,19 @@ export async function listDocumentsByCompany(companyId: string) {
     select: documentSummarySelect,
   });
 }
+
+export async function findDocumentNamesByIds(documentIds: string[]) {
+  if (documentIds.length === 0) {
+    return {} as Record<string, string>;
+  }
+
+  const documents = await prisma.document.findMany({
+    where: { id: { in: documentIds } },
+    select: { id: true, name: true },
+  });
+
+  return Object.fromEntries(documents.map((document) => [document.id, document.name])) as Record<
+    string,
+    string
+  >;
+}

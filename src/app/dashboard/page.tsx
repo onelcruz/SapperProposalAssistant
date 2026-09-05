@@ -7,6 +7,16 @@ const cards = [
     description: "Upload source documents, monitor indexing, and manage company knowledge.",
   },
   {
+    href: "/dashboard/solicitations/new",
+    title: "Solicitations",
+    description: "Upload an RFP and receive a structured requirements, criteria, and deadline summary.",
+  },
+  {
+    href: "/dashboard/proposals/new",
+    title: "Proposal Drafts",
+    description: "Generate a cited proposal section grounded in your company knowledge base.",
+  },
+  {
     href: "/",
     title: "Document Isolation",
     description: "All document access is scoped to the current Clerk organization workspace.",

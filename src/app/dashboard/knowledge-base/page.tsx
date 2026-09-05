@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { DocumentList } from "@/components/knowledge-base/DocumentList";
+import { ErrorBoundary } from "@/components/ui/ErrorBoundary";
 import { FileUpload } from "@/components/ui/FileUpload";
 
 export default function KnowledgeBasePage() {
@@ -26,7 +27,9 @@ export default function KnowledgeBasePage() {
         onComplete={() => setReloadKey((value) => value + 1)}
       />
 
-      <DocumentList reloadKey={reloadKey} />
+      <ErrorBoundary>
+        <DocumentList reloadKey={reloadKey} />
+      </ErrorBoundary>
     </div>
   );
 }
