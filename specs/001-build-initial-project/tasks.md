@@ -23,12 +23,12 @@ description: "Task list for Build Initial Project — GovCon Proposal Assistant"
 
 **Purpose**: Initialize the Next.js + TypeScript project with all required dependencies and tooling.
 
-- [ ] T001 Initialize Next.js project with TypeScript in repository root (`npx create-next-app@latest . --typescript --tailwind --app --src-dir`)
-- [ ] T002 Install core dependencies: `openai`, `@prisma/client`, `prisma`, `pdf-parse`, `mammoth`, `docx`, `@pinecone-database/pinecone` (`npm install`)
-- [ ] T003 [P] Install dev dependencies: `eslint`, `prettier`, `@types/pdf-parse`, `@types/node` (`npm install -D`)
-- [ ] T004 [P] Configure ESLint and Prettier in `.eslintrc.json` and `.prettierrc`
-- [ ] T005 [P] Create `.env.example` listing all required environment variables: `DATABASE_URL`, `OPENAI_API_KEY`, `PINECONE_API_KEY`, `PINECONE_ENVIRONMENT`, `CLERK_SECRET_KEY`, `CLERK_PUBLISHABLE_KEY`, `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`
-- [ ] T006 Create `src/` directory structure: `app/`, `components/`, `lib/`, `api/` (Next.js App Router layout)
+- [x] T001 Initialize Next.js project with TypeScript in repository root (`npx create-next-app@latest . --typescript --tailwind --app --src-dir`)
+- [x] T002 Install core dependencies: `openai`, `@prisma/client`, `prisma`, `pdf-parse`, `mammoth`, `docx`, `@pinecone-database/pinecone` (`npm install`)
+- [x] T003 [P] Install dev dependencies: `eslint`, `prettier`, `@types/pdf-parse`, `@types/node` (`npm install -D`)
+- [x] T004 [P] Configure ESLint and Prettier in `.eslintrc.json` and `.prettierrc`
+- [x] T005 [P] Create `.env.example` listing all required environment variables: `DATABASE_URL`, `OPENAI_API_KEY`, `PINECONE_API_KEY`, `PINECONE_ENVIRONMENT`, `CLERK_SECRET_KEY`, `CLERK_PUBLISHABLE_KEY`, `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`
+- [x] T006 Create `src/` directory structure: `app/`, `components/`, `lib/`, `api/` (Next.js App Router layout)
 
 ---
 
@@ -38,16 +38,16 @@ description: "Task list for Build Initial Project — GovCon Proposal Assistant"
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete.
 
-- [ ] T007 Initialize Prisma and configure `DATABASE_URL` in `prisma/schema.prisma`; define all models: `Company`, `Document`, `DocumentChunk`, `Solicitation`, `ProposalSection`, `Draft`, `Export`
-- [ ] T008 Write and run initial Prisma migration (`npx prisma migrate dev --name init`); commit `prisma/migrations/`
-- [ ] T009 [P] Set up Clerk authentication: install `@clerk/nextjs`, wrap app in `<ClerkProvider>` in `src/app/layout.tsx`, protect all API routes via middleware in `src/middleware.ts`
-- [ ] T010 [P] Implement company-workspace resolver in `src/lib/workspace.ts` — resolves `companyId` from the authenticated Clerk `orgId` on every request
-- [ ] T011 [P] Create Pinecone client singleton in `src/lib/pinecone.ts` — initialized with `PINECONE_API_KEY` and `PINECONE_ENVIRONMENT`
-- [ ] T012 [P] Create OpenAI client singleton in `src/lib/openai.ts` — initialized with `OPENAI_API_KEY`
-- [ ] T013 [P] Create Prisma client singleton in `src/lib/prisma.ts`
-- [ ] T014 Implement shared error-handling utility in `src/lib/errors.ts` — standard API error shape `{ error: string, code: string }`
-- [ ] T015 [P] Build basic app shell: sidebar nav, workspace context header in `src/app/layout.tsx` and `src/components/layout/Sidebar.tsx`
-- [ ] T016 [P] Create shared file-upload UI component in `src/components/ui/FileUpload.tsx` — handles drag-and-drop, shows progress, surfaces errors
+- [x] T007 Initialize Prisma and configure `DATABASE_URL` in `prisma/schema.prisma`; define all models: `Company`, `Document`, `DocumentChunk`, `Solicitation`, `ProposalSection`, `Draft`, `Export`
+- [x] T008 Write and run initial Prisma migration (`npx prisma migrate dev --name init`); commit `prisma/migrations/`
+- [x] T009 [P] Set up Clerk authentication: install `@clerk/nextjs`, wrap app in `<ClerkProvider>` in `src/app/layout.tsx`, protect all API routes via middleware in `src/middleware.ts`
+- [x] T010 [P] Implement company-workspace resolver in `src/lib/workspace.ts` — resolves `companyId` from the authenticated Clerk `orgId` on every request
+- [x] T011 [P] Create Pinecone client singleton in `src/lib/pinecone.ts` — initialized with `PINECONE_API_KEY` and `PINECONE_ENVIRONMENT`
+- [x] T012 [P] Create OpenAI client singleton in `src/lib/openai.ts` — initialized with `OPENAI_API_KEY`
+- [x] T013 [P] Create Prisma client singleton in `src/lib/prisma.ts`
+- [x] T014 Implement shared error-handling utility in `src/lib/errors.ts` — standard API error shape `{ error: string, code: string }`
+- [x] T015 [P] Build basic app shell: sidebar nav, workspace context header in `src/app/layout.tsx` and `src/components/layout/Sidebar.tsx`
+- [x] T016 [P] Create shared file-upload UI component in `src/components/ui/FileUpload.tsx` — handles drag-and-drop, shows progress, surfaces errors
 
 **Checkpoint**: Foundation ready — user story implementation can now begin.
 
@@ -61,19 +61,19 @@ description: "Task list for Build Initial Project — GovCon Proposal Assistant"
 
 ### Implementation for User Story 1
 
-- [ ] T017 [P] [US1] Create `Document` data-access layer in `src/lib/db/documents.ts` — CRUD helpers wrapping Prisma `Document` model
-- [ ] T018 [P] [US1] Implement SHA-256 hash utility in `src/lib/hash.ts` using Node.js `crypto`; used for duplicate detection
-- [ ] T019 [P] [US1] Implement PDF text extractor in `src/lib/parsers/pdf.ts` using `pdf-parse`; throw `ScannedPdfError` when extracted text length < 100 chars for multi-page documents
-- [ ] T020 [P] [US1] Implement DOCX text extractor in `src/lib/parsers/docx.ts` using `mammoth`
-- [ ] T021 [US1] Implement text chunker in `src/lib/chunker.ts` — splits extracted text into overlapping chunks (512 tokens, 50-token overlap) suitable for embedding
-- [ ] T022 [US1] Implement embedding service in `src/lib/embeddings.ts` — calls `openai.embeddings.create` with `text-embedding-ada-002`; returns `{ chunk, embedding }[]`
-- [ ] T023 [US1] Implement Pinecone upsert helper in `src/lib/vectorstore.ts` — upserts vectors under namespace `company:{companyId}`; includes `documentId` and `chunkIndex` metadata
-- [ ] T024 [US1] Create document indexing orchestrator in `src/lib/indexing.ts` — orchestrates: hash check → parse → chunk → embed → upsert → persist `Document` + `DocumentChunk` records; updates `Document.status` (`processing` → `indexed` or `failed`)
-- [ ] T025 [US1] Implement upload API route in `src/app/api/documents/route.ts` (`POST /api/documents`): validate file type (PDF/DOCX only → 415 if unsupported), stream to buffer, call indexing orchestrator, return `{ documentId, status }`
-- [ ] T026 [US1] Implement documents list API route in `src/app/api/documents/route.ts` (`GET /api/documents`): return all documents for the authenticated company workspace
-- [ ] T027 [US1] Build Knowledge Base upload page in `src/app/dashboard/knowledge-base/page.tsx` — uses `FileUpload` component, calls `POST /api/documents`, shows per-file status (processing / indexed / error with message)
-- [ ] T028 [US1] Build documents list component in `src/components/knowledge-base/DocumentList.tsx` — lists uploaded documents with name, status, and upload date; fetches from `GET /api/documents`
-- [ ] T029 [US1] Add cross-company isolation guard to all document API handlers in `src/app/api/documents/route.ts` — assert `document.companyId === resolvedCompanyId` before returning any data
+- [x] T017 [P] [US1] Create `Document` data-access layer in `src/lib/db/documents.ts` — CRUD helpers wrapping Prisma `Document` model
+- [x] T018 [P] [US1] Implement SHA-256 hash utility in `src/lib/hash.ts` using Node.js `crypto`; used for duplicate detection
+- [x] T019 [P] [US1] Implement PDF text extractor in `src/lib/parsers/pdf.ts` using `pdf-parse`; throw `ScannedPdfError` when extracted text length < 100 chars for multi-page documents
+- [x] T020 [P] [US1] Implement DOCX text extractor in `src/lib/parsers/docx.ts` using `mammoth`
+- [x] T021 [US1] Implement text chunker in `src/lib/chunker.ts` — splits extracted text into overlapping chunks (512 tokens, 50-token overlap) suitable for embedding
+- [x] T022 [US1] Implement embedding service in `src/lib/embeddings.ts` — calls `openai.embeddings.create` with `text-embedding-ada-002`; returns `{ chunk, embedding }[]`
+- [x] T023 [US1] Implement Pinecone upsert helper in `src/lib/vectorstore.ts` — upserts vectors under namespace `company:{companyId}`; includes `documentId` and `chunkIndex` metadata
+- [x] T024 [US1] Create document indexing orchestrator in `src/lib/indexing.ts` — orchestrates: hash check → parse → chunk → embed → upsert → persist `Document` + `DocumentChunk` records; updates `Document.status` (`processing` → `indexed` or `failed`)
+- [x] T025 [US1] Implement upload API route in `src/app/api/documents/route.ts` (`POST /api/documents`): validate file type (PDF/DOCX only → 415 if unsupported), stream to buffer, call indexing orchestrator, return `{ documentId, status }`
+- [x] T026 [US1] Implement documents list API route in `src/app/api/documents/route.ts` (`GET /api/documents`): return all documents for the authenticated company workspace
+- [x] T027 [US1] Build Knowledge Base upload page in `src/app/dashboard/knowledge-base/page.tsx` — uses `FileUpload` component, calls `POST /api/documents`, shows per-file status (processing / indexed / error with message)
+- [x] T028 [US1] Build documents list component in `src/components/knowledge-base/DocumentList.tsx` — lists uploaded documents with name, status, and upload date; fetches from `GET /api/documents`
+- [x] T029 [US1] Add cross-company isolation guard to all document API handlers in `src/app/api/documents/route.ts` — assert `document.companyId === resolvedCompanyId` before returning any data
 
 **Checkpoint**: User Story 1 is fully functional — document upload, dedup, scanned-PDF rejection, indexing, and isolation all work independently.
 
@@ -87,14 +87,14 @@ description: "Task list for Build Initial Project — GovCon Proposal Assistant"
 
 ### Implementation for User Story 2
 
-- [ ] T030 [P] [US2] Create `Solicitation` data-access layer in `src/lib/db/solicitations.ts` — CRUD helpers wrapping Prisma `Solicitation` model
-- [ ] T031 [P] [US2] Implement solicitation parser in `src/lib/parsers/solicitation.ts` — calls `pdf-parse` to extract text; throws `CorruptedFileError` on extraction failure; re-uses `ScannedPdfError` for image-only files
-- [ ] T032 [US2] Implement LLM extraction service in `src/lib/solicitation-extractor.ts` — sends extracted text to GPT-4o with JSON-mode prompt requesting `{ requirements: string[], criteria: { factor: string, weight?: string }[], deadline: string | null }`; sets `deadline: null` (not fabricated) when absent; enforces 180-second timeout
-- [ ] T033 [US2] Create solicitation upload API route in `src/app/api/solicitations/route.ts` (`POST /api/solicitations`): accept PDF, parse, call extractor, persist `Solicitation` record, return `{ solicitationId, requirements, criteria, deadline }`
-- [ ] T034 [US2] Create solicitation get API route in `src/app/api/solicitations/[id]/route.ts` (`GET /api/solicitations/:id`): return persisted solicitation with isolation guard
-- [ ] T035 [US2] Build solicitation upload page in `src/app/dashboard/solicitations/new/page.tsx` — uses `FileUpload` component, calls `POST /api/solicitations`, redirects to summary page on success
-- [ ] T036 [US2] Build solicitation summary page in `src/app/dashboard/solicitations/[id]/page.tsx` — displays requirements checklist, evaluation criteria table, deadline badge (or "Not found" if null)
-- [ ] T037 [US2] Add progress feedback for solicitation processing in `src/app/dashboard/solicitations/new/page.tsx` — polling or SSE to show "Parsing…" status while the LLM extraction runs
+- [x] T030 [P] [US2] Create `Solicitation` data-access layer in `src/lib/db/solicitations.ts` — CRUD helpers wrapping Prisma `Solicitation` model
+- [x] T031 [P] [US2] Implement solicitation parser in `src/lib/parsers/solicitation.ts` — calls `pdf-parse` to extract text; throws `CorruptedFileError` on extraction failure; re-uses `ScannedPdfError` for image-only files
+- [x] T032 [US2] Implement LLM extraction service in `src/lib/solicitation-extractor.ts` — sends extracted text to GPT-4o with JSON-mode prompt requesting `{ requirements: string[], criteria: { factor: string, weight?: string }[], deadline: string | null }`; sets `deadline: null` (not fabricated) when absent; enforces 180-second timeout
+- [x] T033 [US2] Create solicitation upload API route in `src/app/api/solicitations/route.ts` (`POST /api/solicitations`): accept PDF, parse, call extractor, persist `Solicitation` record, return `{ solicitationId, requirements, criteria, deadline }`
+- [x] T034 [US2] Create solicitation get API route in `src/app/api/solicitations/[id]/route.ts` (`GET /api/solicitations/:id`): return persisted solicitation with isolation guard
+- [x] T035 [US2] Build solicitation upload page in `src/app/dashboard/solicitations/new/page.tsx` — uses `FileUpload` component, calls `POST /api/solicitations`, redirects to summary page on success
+- [x] T036 [US2] Build solicitation summary page in `src/app/dashboard/solicitations/[id]/page.tsx` — displays requirements checklist, evaluation criteria table, deadline badge (or "Not found" if null)
+- [x] T037 [US2] Add progress feedback for solicitation processing in `src/app/dashboard/solicitations/new/page.tsx` — polling or SSE to show "Parsing…" status while the LLM extraction runs
 
 **Checkpoint**: User Story 2 works independently — solicitation upload, extraction, and display function without a knowledge base present.
 
@@ -108,15 +108,15 @@ description: "Task list for Build Initial Project — GovCon Proposal Assistant"
 
 ### Implementation for User Story 3
 
-- [ ] T038 [P] [US3] Create `ProposalSection` and `Draft` data-access layers in `src/lib/db/proposals.ts` — CRUD helpers wrapping Prisma models
-- [ ] T039 [P] [US3] Implement retrieval service in `src/lib/retrieval.ts` — embeds the solicitation requirements text, queries Pinecone namespace `company:{companyId}` for top-10 chunks, returns `{ chunk, documentId, score }[]`
-- [ ] T040 [US3] Implement draft generation service in `src/lib/drafter.ts` — constructs prompt with retrieved chunks (as cited source material) + solicitation requirements + section type; calls GPT-4o with JSON-mode output `{ paragraphs: { text: string, sourceDocumentId: string, sourceExcerpt: string }[] }`; sets `limitedCoverage: true` flag when fewer than 3 chunks retrieved
-- [ ] T041 [US3] Create draft API route (`POST /api/proposals/draft`) in `src/app/api/proposals/draft/route.ts`: accept `{ solicitationId, sectionType }`, call retrieval + drafter, persist `ProposalSection` + `Draft`, return draft content with citations
-- [ ] T042 [US3] Create draft save API route (`PATCH /api/proposals/drafts/[id]`) in `src/app/api/proposals/drafts/[id]/route.ts`: accept edited content, update `Draft.editedContent`, return updated draft
-- [ ] T043 [US3] Create draft get API route (`GET /api/proposals/drafts/[id]`) in `src/app/api/proposals/drafts/[id]/route.ts`: return draft with isolation guard
-- [ ] T044 [US3] Build draft request UI in `src/app/dashboard/proposals/new/page.tsx` — solicitation selector + section type selector (Technical Approach / Past Performance / Management Approach) + "Generate Draft" button
-- [ ] T045 [US3] Build rich-text draft editor in `src/components/proposals/DraftEditor.tsx` — renders paragraphs with inline citation tooltips; auto-saves edits to `PATCH /api/proposals/drafts/:id`; shows `limitedCoverage` warning banner when flagged
-- [ ] T046 [US3] Build draft view page in `src/app/dashboard/proposals/[id]/page.tsx` — loads draft, renders `DraftEditor`, shows citation panel linking back to source documents
+- [x] T038 [P] [US3] Create `ProposalSection` and `Draft` data-access layers in `src/lib/db/proposals.ts` — CRUD helpers wrapping Prisma models
+- [x] T039 [P] [US3] Implement retrieval service in `src/lib/retrieval.ts` — embeds the solicitation requirements text, queries Pinecone namespace `company:{companyId}` for top-10 chunks, returns `{ chunk, documentId, score }[]`
+- [x] T040 [US3] Implement draft generation service in `src/lib/drafter.ts` — constructs prompt with retrieved chunks (as cited source material) + solicitation requirements + section type; calls GPT-4o with JSON-mode output `{ paragraphs: { text: string, sourceDocumentId: string, sourceExcerpt: string }[] }`; sets `limitedCoverage: true` flag when fewer than 3 chunks retrieved
+- [x] T041 [US3] Create draft API route (`POST /api/proposals/draft`) in `src/app/api/proposals/draft/route.ts`: accept `{ solicitationId, sectionType }`, call retrieval + drafter, persist `ProposalSection` + `Draft`, return draft content with citations
+- [x] T042 [US3] Create draft save API route (`PATCH /api/proposals/drafts/[id]`) in `src/app/api/proposals/drafts/[id]/route.ts`: accept edited content, update `Draft.editedContent`, return updated draft
+- [x] T043 [US3] Create draft get API route (`GET /api/proposals/drafts/[id]`) in `src/app/api/proposals/drafts/[id]/route.ts`: return draft with isolation guard
+- [x] T044 [US3] Build draft request UI in `src/app/dashboard/proposals/new/page.tsx` — solicitation selector + section type selector (Technical Approach / Past Performance / Management Approach) + "Generate Draft" button
+- [x] T045 [US3] Build rich-text draft editor in `src/components/proposals/DraftEditor.tsx` — renders paragraphs with inline citation tooltips; auto-saves edits to `PATCH /api/proposals/drafts/:id`; shows `limitedCoverage` warning banner when flagged
+- [x] T046 [US3] Build draft view page in `src/app/dashboard/proposals/[id]/page.tsx` — loads draft, renders `DraftEditor`, shows citation panel linking back to source documents
 
 **Checkpoint**: User Story 3 works — draft generation with citations, limited-coverage flagging, and edit persistence all function given US1 and US2 outputs.
 
@@ -130,10 +130,10 @@ description: "Task list for Build Initial Project — GovCon Proposal Assistant"
 
 ### Implementation for User Story 4
 
-- [ ] T047 [P] [US4] Create `Export` data-access layer in `src/lib/db/exports.ts` — CRUD helpers wrapping Prisma `Export` model
-- [ ] T048 [US4] Implement Word document builder in `src/lib/exporter.ts` — uses `docx` npm package to assemble sections: heading per section type + paragraphs from `Draft.editedContent ?? Draft.content`; returns `Buffer`
-- [ ] T049 [US4] Create export API route (`POST /api/exports`) in `src/app/api/exports/route.ts`: accept `{ solicitationId }`, load all drafts for that solicitation (using `editedContent` over `content`), call builder, stream `.docx` as `application/vnd.openxmlformats-officedocument.wordprocessingml.document` response; persist `Export` record
-- [ ] T050 [US4] Add "Export to Word" button to draft view page in `src/app/dashboard/proposals/[id]/page.tsx` and to solicitation summary page in `src/app/dashboard/solicitations/[id]/page.tsx`
+- [x] T047 [P] [US4] Create `Export` data-access layer in `src/lib/db/exports.ts` — CRUD helpers wrapping Prisma `Export` model
+- [x] T048 [US4] Implement Word document builder in `src/lib/exporter.ts` — uses `docx` npm package to assemble sections: heading per section type + paragraphs from `Draft.editedContent ?? Draft.content`; returns `Buffer`
+- [x] T049 [US4] Create export API route (`POST /api/exports`) in `src/app/api/exports/route.ts`: accept `{ solicitationId }`, load all drafts for that solicitation (using `editedContent` over `content`), call builder, stream `.docx` as `application/vnd.openxmlformats-officedocument.wordprocessingml.document` response; persist `Export` record
+- [x] T050 [US4] Add "Export to Word" button to draft view page in `src/app/dashboard/proposals/[id]/page.tsx` and to solicitation summary page in `src/app/dashboard/solicitations/[id]/page.tsx`
 
 **Checkpoint**: User Story 4 works — export produces a valid `.docx` using edited content.
 
@@ -143,12 +143,12 @@ description: "Task list for Build Initial Project — GovCon Proposal Assistant"
 
 **Purpose**: Hardening, edge-case handling, and usability improvements across all stories.
 
-- [ ] T051 [P] Add large-document guard in `src/lib/parsers/pdf.ts` and `src/lib/indexing.ts` — stream processing for files > 10 MB; surface progress via Server-Sent Events on `GET /api/documents/:id/status`
-- [ ] T052 [P] Add corrupted/password-protected PDF detection in `src/lib/parsers/solicitation.ts` — catch `pdf-parse` exceptions, return `CorruptedFileError` with user-friendly message
-- [ ] T053 [P] Add rate-limit and timeout wrappers in `src/lib/openai.ts` — retry with exponential backoff (max 3 attempts) for transient OpenAI errors
-- [ ] T054 Cross-company isolation audit in `src/app/api/`, `src/lib/retrieval.ts`, and `src/app/api/exports/route.ts` — confirm `companyId` guard is enforced before Prisma, Pinecone, draft retrieval, and export operations; add integration assertions for cross-company denial paths
-- [ ] T055 [P] Add loading skeletons and error boundary components in `src/components/ui/Skeleton.tsx` and `src/components/ui/ErrorBoundary.tsx`
-- [ ] T056 [P] Update `README.md` with local dev setup, environment variable guide, and architecture overview
+- [x] T051 [P] Add large-document guard in `src/lib/parsers/pdf.ts` and `src/lib/indexing.ts` — stream processing for files > 10 MB; surface progress via Server-Sent Events on `GET /api/documents/:id/status`
+- [x] T052 [P] Add corrupted/password-protected PDF detection in `src/lib/parsers/solicitation.ts` — catch `pdf-parse` exceptions, return `CorruptedFileError` with user-friendly message
+- [x] T053 [P] Add rate-limit and timeout wrappers in `src/lib/openai.ts` — retry with exponential backoff (max 3 attempts) for transient OpenAI errors
+- [x] T054 Cross-company isolation audit in `src/app/api/`, `src/lib/retrieval.ts`, and `src/app/api/exports/route.ts` — confirm `companyId` guard is enforced before Prisma, Pinecone, draft retrieval, and export operations; add integration assertions for cross-company denial paths
+- [x] T055 [P] Add loading skeletons and error boundary components in `src/components/ui/Skeleton.tsx` and `src/components/ui/ErrorBoundary.tsx`
+- [x] T056 [P] Update `README.md` with local dev setup, environment variable guide, and architecture overview
 
 ---
 
@@ -156,11 +156,11 @@ description: "Task list for Build Initial Project — GovCon Proposal Assistant"
 
 **Purpose**: Explicitly validate user-story independent tests, functional requirements, and measurable success criteria before release readiness.
 
-- [ ] T057 Create acceptance matrix in `specs/001-build-initial-project/acceptance-matrix.md` mapping US1–US4 independent tests to FR-001 through FR-013 with pass/fail evidence fields
-- [ ] T058 Define and execute SLA timing validation protocol in `specs/001-build-initial-project/validation/sla-results.md` for SC-001, SC-002, SC-003, and SC-006 (minimum 3 runs each with measured durations)
-- [ ] T059 Define and execute citation-coverage validation in `specs/001-build-initial-project/validation/citation-coverage.md` to confirm SC-004 across representative generated drafts
-- [ ] T060 Define and execute cross-company isolation validation in `specs/001-build-initial-project/validation/isolation-results.md` with explicit negative tests for API access, retrieval, and exports to verify SC-005
-- [ ] T061 Define and execute final readiness checklist in `specs/001-build-initial-project/validation/final-readiness.md` covering SC-007 evidence, unresolved risks, and go/no-go decision
+- [x] T057 Create acceptance matrix in `specs/001-build-initial-project/acceptance-matrix.md` mapping US1–US4 independent tests to FR-001 through FR-013 with pass/fail evidence fields
+- [x] T058 Define and execute SLA timing validation protocol in `specs/001-build-initial-project/validation/sla-results.md` for SC-001, SC-002, SC-003, and SC-006 (minimum 3 runs each with measured durations)
+- [x] T059 Define and execute citation-coverage validation in `specs/001-build-initial-project/validation/citation-coverage.md` to confirm SC-004 across representative generated drafts
+- [x] T060 Define and execute cross-company isolation validation in `specs/001-build-initial-project/validation/isolation-results.md` with explicit negative tests for API access, retrieval, and exports to verify SC-005
+- [x] T061 Define and execute final readiness checklist in `specs/001-build-initial-project/validation/final-readiness.md` covering SC-007 evidence, unresolved risks, and go/no-go decision
 
 ---
 

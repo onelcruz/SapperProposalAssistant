@@ -1,0 +1,85 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Company {
+  id            String         @id @default(cuid())
+  clerkOrgId    String         @unique
+  name          String
+  documents     Document[]
+  solicitations Solicitation[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+}
+
+model Document {
+  id         String          @id @default(cuid())
+  companyId  String
+  company    Company         @relation(fields: [companyId], references: [id])
+  name       String
+  fileType   String
+  sha256Hash String
+  status     String          @default("processing")
+  chunks     DocumentChunk[]
+  createdAt  DateTime        @default(now())
+  updatedAt  DateTime        @updatedAt
+
+  @@unique([companyId, sha256Hash])
+}
+
+model DocumentChunk {
+  id         String   @id @default(cuid())
+  documentId String
+  document   Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  chunkIndex Int
+  text       String
+  createdAt  DateTime @default(now())
+}
+
+model Solicitation {
+  id           String            @id @default(cuid())
+  companyId    String
+  company      Company           @relation(fields: [companyId], references: [id])
+  name         String
+  requirements String[]
+  criteria     Json
+  deadline     String?
+  status       String            @default("processing")
+  sections     ProposalSection[]
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+}
+
+model ProposalSection {
+  id             String       @id @default(cuid())
+  solicitationId String
+  solicitation   Solicitation @relation(fields: [solicitationId], references: [id])
+  sectionType    String
+  drafts         Draft[]
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+}
+
+model Draft {
+  id              String          @id @default(cuid())
+  sectionId       String
+  section         ProposalSection @relation(fields: [sectionId], references: [id])
+  content         Json
+  editedContent   Json?
+  limitedCoverage Boolean         @default(false)
+  exports         Export[]
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+}
+
+model Export {
+  id        String   @id @default(cuid())
+  draftId   String
+  draft     Draft    @relation(fields: [draftId], references: [id])
+  fileUrl   String?
+  createdAt DateTime @default(now())
+}
